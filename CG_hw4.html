@@ -116,7 +116,7 @@ function init() {
   angle = 0.0;
   	
   car = buildVehicle();
-	
+
 	/////////////////////////////////////
   
   var geometry = new THREE.CylinderGeometry( 10, 10, 10, 32 );
@@ -128,12 +128,10 @@ function init() {
 	scene.add( cylinder );
   ////////////////////////////////////////
   
-
-	bumpMap = THREE.ImageUtils.loadTexture("https://jyunming-chen.github.io/tutsplus/images/wood_oak_002_bump.jpg");
 	var loader = new THREE.ObjectLoader();
-  loader.load ('https://jyunming-chen.github.io/tutsplus/models/toy-train.json', 
+  loader.load ('https://siyin.github.io/2017CG_HW/car6/volkeswagon-vw-beetle.json', 
   function ( obj ) {
-    obj.scale.set (5,5,5);
+    obj.scale.set (0.03,0.03,0.03);
     scene.add( obj );
     car = obj;  
     });
@@ -154,7 +152,7 @@ function update(dt) {
 	if ( keyboard.pressed("down") )  
 		speed -= 0.5;    
 
-	speed = Math.clamp (speed, 0.1, 20.0);		
+	speed = Math.clamp (speed, 0, 20.0);		
 	vel = new THREE.Vector3(speed,0,0);
 	
 	vel.applyAxisAngle (new THREE.Vector3(0,1,0), angle);
@@ -169,6 +167,7 @@ function animate() {
   var dt = clock.getDelta();
   update(dt);
   if(car && bumpMap){
+   bumpMap = THREE.ImageUtils.loadTexture("https://siyin.github.io/2017CG_HW/car6/body.bmp");
     car.traverse(
         function(mesh) {
             if (mesh instanceof THREE.Mesh) {
@@ -180,7 +179,8 @@ function animate() {
   }
   // car update
   car.position.copy(pos);
-  car.rotation.y = Math.PI/2+angle;
+  car.rotation.y = -Math.PI/2+angle;
+  car.position.y = 8;
   
   cameraDrive.position.x = pos.x+5;
   cameraDrive.position.y = 15;
@@ -211,6 +211,8 @@ function render() {
   renderer.render(sceneHUD, cameraHUD);
   cameraDrive.position = pos;
 }
+
+
 
 
 
